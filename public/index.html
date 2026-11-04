@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+
+ <meta charset="UTF-8">
+
+
+
+ <meta name="viewport"
+
+    content="width=device-width, initial-scale=1.0">
+
+
+
+ <title>SISFIS | Sistema de Informes de Fiscalización</title>
+
+
+
+ <link rel="stylesheet" href="styles.css">
+
+</head>
+
+
+
+<body>
+
+
+
+ <!-- ENCABEZADO PRINCIPAL -->
+
+
+
+ <header>
+
+  <h1>SISFIS_LUIS</h1>
+
+  <p>Sistema de Gestión de Informes de Fiscalización</p>
+
+  <p>Proyecto académico con datos ficticios</p>
+
+ </header>
+
+
+
+ <!-- MENÚ DE NAVEGACIÓN -->
+
+
+
+ <nav class="navbar">
+
+  <a href="#inicio">Inicio</a>
+
+  <a href="#registro">Nuevo informe</a>
+
+  <a href="#informes">Informes registrados</a>
+
+  <a href="#vista-previa">Vista previa</a>
+
+ </nav>
+
+
+
+ <!-- CONTENIDO PRINCIPAL -->
+
+
+
+ <main class="contenedor" id="inicio">
+
+
+
+  <!-- PRESENTACIÓN -->
+
+
+
+  <section class="card">
+
+   <h2>Bienvenido al sistema SISFIS</h2>
+
+
+
+   <p>
+
+    Plataforma académica para registrar, consultar,
+
+    actualizar y eliminar informes de fiscalización
+
+    mediante servicios API RESTful.
+
+   </p>
+
+
+
+   <div class="alert alert-info">
+
+    <strong>Importante:</strong>
+
+    Todos los datos utilizados en esta práctica
+
+    son ficticios y tienen fines exclusivamente
+
+    educativos.
+
+   </div>
+
+  </section>
+
+
+
+  <!-- FORMULARIO DE REGISTRO -->
+
+
+
+  <section class="card" id="registro">
+
+
+
+   <h2>Registro de informe de fiscalización</h2>
+
+
+
+   <p>
+
+    Complete la información solicitada para
+
+    registrar un nuevo informe.
+
+   </p>
+
+
+
+   <form id="form">
+
+
+
+    <!-- DATOS GENERALES -->
+
+
+
+    <h3>1. Datos generales</h3>
+
+
+
+    <div class="form-grid">
+
+
+
+     <div class="form-group">
+
+      <label for="expediente">
+
+       Número de expediente *
+
+      </label>
+
+
+
+      <input
+
+       type="text"
+
+       id="expediente"
+
+       name="expediente"
+
+       placeholder="Ejemplo: 202600123456"
+
+       required
+
+      >
+
+     </div>
+
+
+
+     <div class="form-group">
+
+      <label for="empresa">
+
+       Agente fiscalizado / Empresa *
+
+      </label>
+
+
+
+      <input
+
+       type="text"
+
+       id="empresa"
+
+       name="empresa"
+
+       placeholder="Ejemplo: Transportes Demo S.A.C."
+
+       required
+
+      >
+
+     </div>
+
+
+
+     <div class="form-group">
+
+      <label for="placa">
+
+       Placa de la unidad vehicular
+
+      </label>
+
+
+
+      <input
+
+       type="text"
+
+       id="placa"
+
+       name="placa"
+
+       placeholder="Ejemplo: ABC-123"
+
+      >
+
+     </div>
+
+
+
+     <div class="form-group">
+
+      <label for="supervisor">
+
+       Supervisor responsable
+
+      </label>
+
+
+
+      <input
+
+       type="text"
+
+       id="supervisor"
+
+       name="supervisor"
+
+       placeholder="Ejemplo: Ing. Juan Pérez Demo"
+
+      >
+
+     </div>
+
+
+
+    </div>
+
+
+
+    <!-- ANTECEDENTES -->
+
+
+
+    <h3>2. Antecedentes</h3>
+
+
+
+    <label for="antecedentes">
+
+     Descripción de antecedentes
+
+    </label>
+
+
+
+    <textarea
+
+     id="antecedentes"
+
+     name="antecedentes"
+
+     rows="6"
+
+     placeholder="Describa los antecedentes del expediente ficticio..."
+
+    ></textarea>
+
+
+
+    <!-- ANÁLISIS -->
+
+
+
+    <h3>3. Análisis de fiscalización</h3>
+
+
+
+    <label for="analisis">
+
+     Análisis de los hechos
+
+    </label>
+
+
+
+    <textarea
+
+     id="analisis"
+
+     name="analisis"
+
+     rows="7"
+
+     placeholder="Ingrese el análisis técnico de la fiscalización..."
+
+    ></textarea>
+
+
+
+    <!-- DESCARGOS -->
+
+
+
+    <h3>4. Evaluación de descargos</h3>
+
+
+
+    <div class="alert alert-info">
+
+     Active esta opción cuando el agente
+
+     fiscalizado haya presentado descargos.
+
+    </div>
+
+
+
+    <label for="tieneDescargo">
+
+     <input
+
+      type="checkbox"
+
+      id="tieneDescargo"
+
+      name="tieneDescargo"
+
+     >
+
+     ¿El agente fiscalizado presentó descargos?
+
+    </label>
+
+
+
+    <div id="zonaDescargo" hidden>
+
+
+
+     <h3>Análisis de descargos</h3>
+
+
+
+     <label for="descargos">
+
+      Evaluación de los documentos presentados
+
+     </label>
+
+
+
+     <textarea
+
+      id="descargos"
+
+      name="descargos"
+
+      rows="7"
+
+      placeholder="Describa los descargos presentados y su evaluación..."
+
+     ></textarea>
+
+
+
+    </div>
+
+
+
+    <!-- CONCLUSIONES -->
+
+
+
+    <h3>5. Conclusiones</h3>
+
+
+
+    <label for="conclusiones">
+
+     Conclusiones de la fiscalización
+
+    </label>
+
+
+
+    <textarea
+
+     id="conclusiones"
+
+     name="conclusiones"
+
+     rows="6"
+
+     placeholder="Ingrese las conclusiones del informe..."
+
+    ></textarea>
+
+
+
+    <!-- RECOMENDACIONES -->
+
+
+
+    <h3>6. Recomendaciones</h3>
+
+
+
+    <label for="recomendaciones">
+
+     Recomendaciones finales
+
+    </label>
+
+
+
+    <textarea
+
+     id="recomendaciones"
+
+     name="recomendaciones"
+
+     rows="6"
+
+     placeholder="Ingrese las recomendaciones correspondientes..."
+
+    ></textarea>
+
+
+
+    <!-- BOTÓN DE GUARDADO -->
+
+
+
+    <div class="acciones">
+
+     <button
+
+      type="submit"
+
+      class="btn btn-guardar"
+
+     >
+
+      Guardar informe
+
+     </button>
+
+
+
+     <button
+
+      type="reset"
+
+      class="btn btn-secundario"
+
+     >
+
+      Limpiar formulario
+
+     </button>
+
+    </div>
+
+
+
+   </form>
+
+
+
+  </section>
+
+
+
+  <!-- INFORMES REGISTRADOS -->
+
+
+
+  <section class="card" id="informes">
+
+
+
+   <h2>Informes registrados</h2>
+
+
+
+   <p>
+
+    En esta sección se muestran los informes
+
+    almacenados en la base de datos JSON.
+
+   </p>
+
+
+
+   <div id="lista">
+
+    Cargando informes...
+
+   </div>
+
+
+
+  </section>
+
+
+
+  <!-- VISTA PREVIA -->
+
+
+
+  <section class="card" id="vista-previa">
+
+
+
+   <h2>Vista previa del informe</h2>
+
+
+
+   <p>
+
+    Aquí podrá visualizar el contenido del
+
+    informe registrado o seleccionado.
+
+   </p>
+
+
+
+   <pre
+
+    id="vista"
+
+    class="vista-previa"
+
+    style="white-space: pre-wrap; overflow-wrap: anywhere;"
+
+   >Seleccione o guarde un informe para visualizarlo.</pre>
+
+
+
+  </section>
+
+
+
+ </main>
+
+
+
+ <!-- PIE DE PÁGINA -->
+
+
+
+ <footer>
+
+
+
+  <p>
+
+   SISFIS_LUIS - Sistema de Informes de Fiscalización
+
+  </p>
+
+
+
+  <p>
+
+   Proyecto académico de desarrollo de API RESTful
+
+  </p>
+
+
+
+  <p>
+
+   Datos ficticios para fines educativos
+
+  </p>
+
+
+
+ </footer>
+
+
+
+ <!-- JAVASCRIPT -->
+
+
+
+ <script src="app.js"></script>
+
+
+
+</body>
+
+</html>

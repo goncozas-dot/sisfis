@@ -1,0 +1,373 @@
+/* =========================================================================
+   word.css  ·  Informe de Supervisión (réplica del Word)
+   -------------------------------------------------------------------------
+   Página      A4 (210 × 297 mm)
+   Márgenes    superior 35 mm · derecha 20 mm · inferior 15 mm · izquierda 25 mm
+   Encabezado  a 5 mm del borde superior (tabla logo + razón social)
+   Tipografía  Poppins en todo el documento (9.5 pt cuerpo, 9 pt recomendaciones
+               y anexos, 8 / 7.5 pt tabla, 7 pt nota al pie)
+   Interlineado 1.15 (Word "line=276") en el cuerpo; sencillo en el resto.
+   Poppins mide 1.5 × el cuerpo de letra a interlineado sencillo, por eso
+   los line-height están expresados como 1.5 (sencillo) y 1.725 (1.15 × 1.5).
+   ========================================================================= */
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+/* ---------- Página ------------------------------------------------------ */
+@page {
+  size: A4;
+  /* Superior = 5 mm (distancia del encabezado al borde); los 30 mm restantes
+     hasta completar los 35 mm del Word los aporta el <thead> repetido. */
+  margin: 5mm 20mm 15mm 25mm;
+}
+
+/* ---------- Variables --------------------------------------------------- */
+:root {
+  --font: "Poppins", "Segoe UI", Arial, sans-serif;
+  --negro: #000000;
+  --azul-tabla: #0070c0;     /* cabecera de la TABLA N° 01 */
+  --rojo-tabla: #ee0000;     /* descripción del incumplimiento */
+
+  --lh-1: 1.5;               /* interlineado sencillo (Poppins) */
+  --lh-115: 1.725;           /* interlineado 1.15 */
+
+  --ancho-texto: 165mm;      /* 210 − 25 − 20 */
+}
+
+/* ---------- Base -------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 9.5pt;
+  line-height: var(--lh-1);
+  color: var(--negro);
+  text-align: left;
+}
+
+p { margin: 0; }
+b, strong { font-weight: 700; }
+sup { line-height: 0; }
+
+/* Vista en pantalla: simula la hoja A4 con sus márgenes */
+@media screen {
+  html { background: #d9d9d9; }
+  body {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 12px auto;
+    padding: 5mm 20mm 15mm 25mm;
+    background: #fff;
+    box-shadow: 0 0 6px rgba(0, 0, 0, .35);
+  }
+}
+
+/* =========================================================================
+   MARCO DE PÁGINA + ENCABEZADO (se repite en todas las páginas)
+   Tabla 165 mm: logo (77.5 mm) | razón social (87.5 mm) · alto 23 mm
+   Línea inferior 0.5 pt · empieza a 5 mm del borde superior.
+   El <thead> mide 30 mm en total (23 mm de tabla + 7 mm de aire) para que el
+   texto arranque a 35 mm del borde, igual que en el Word.
+   ========================================================================= */
+.page-frame {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.page-frame > thead { display: table-header-group; }
+.page-frame > tbody > tr > td,
+.page-frame > thead > tr > td { padding: 0; vertical-align: top; }
+.pf-head { height: 30mm; }
+.doc-header { height: 30mm; font-size: 10pt; }
+
+.header-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.header-line { border-top: 0.5pt solid var(--negro); height: 0; }   /* línea bajo el encabezado */
+.header-table td { padding: 0; vertical-align: middle; height: 23mm; }
+.header-table { height: 23mm; }
+.header-table .col-logo   { width: 77.5mm; }
+.header-table .col-nombre { width: 87.5mm; }
+.header-logo { display: block; width: 111pt; height: 63.75pt; }
+.header-nombre {
+  text-align: right;
+  font-size: 10pt;
+  font-weight: 700;
+  line-height: var(--lh-1);
+}
+
+/* =========================================================================
+   BLOQUE SUPERIOR: título, destinatarios, fecha y expediente
+   ========================================================================= */
+.meta-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.meta-table .col-izq { width: 329.6pt; }
+.meta-table td { padding: 0; vertical-align: top; }
+
+.meta-table .meta-titulo {
+  height: 44pt;
+  padding: 3.6pt 5pt 0 143pt;     /* centrado sobre el tabulador a 233.85 pt */
+  text-align: center;
+  font-size: 12pt;
+  font-weight: 700;
+  line-height: 18pt;
+}
+.meta-table .meta-cc {
+  height: 44pt;
+  padding: 0 2.83pt;
+  border-left: 0.75pt solid var(--negro);
+  font-size: 8pt;
+  line-height: 12pt;
+}
+.meta-table .meta-cc > div { margin-top: -1.3pt; }
+
+.meta-table .meta-fecha, .meta-table .meta-exp {
+  padding-bottom: 1pt;
+  border-bottom: 0.75pt solid var(--negro);
+  font-size: 9.5pt;
+  line-height: 14.25pt;
+}
+.meta-table .meta-exp { padding-left: 3pt; border-left: 0.75pt solid var(--negro); }
+
+/* ---------- A / De / Asunto / Referencia -------------------------------- */
+.kv { text-align: justify; line-height: 14.25pt; }
+.kv .k, .kv .s { text-indent: 0; }
+.kv .k { display: inline-block; min-width: 78pt; }              /* tab a 1560 tw */
+.kv .s { display: inline-block; min-width: 28.2pt; }            /* siguiente tab (106.2 pt) */
+.kv .g2 { display: inline-block; width: 2.4pt; }      /* 1 espacio antes de ":" */
+.kv .g3 { display: inline-block; width: 7.2pt; }      /* 3 espacios después de ":" */
+.kv-after { margin-bottom: 12pt; }
+.kv-hang  { padding-left: 106.35pt; text-indent: -106.35pt; }   /* Asunto */
+.kv-sub   { padding-left: 106.2pt; }                            /* línea "Supervisor …" */
+.kv-ref   { padding-bottom: 1pt; border-bottom: 0.5pt solid var(--negro); }
+
+/* Párrafos vacíos con la altura exacta que tienen en el Word */
+.blank          { height: 14.25pt; }   /* Poppins 9.5 pt, sencillo   */
+.blank-115      { height: 16.39pt; }   /* Poppins 9.5 pt, 1.15       */
+.blank-b6-115   { height: 22.39pt; }   /* idem + 6 pt antes          */
+.blank-b6       { height: 20.25pt; }   /* 6 pt antes + sencillo      */
+.blank-ref      { height: 10.05pt; }   /* párrafo tras "Referencia" */
+.blank-9        { height: 13.5pt;  }   /* Poppins 9 pt, sencillo     */
+.blank-b6-9-115 { height: 21.5pt;  }   /* 6 pt antes + 9 pt a 1.15   */
+
+/* =========================================================================
+   SECCIONES NUMERADAS (1. OBJETIVO: … 7. RECOMENDACIONES:)
+   Cada párrafo numerado usa sangría francesa:
+     --l = sangría izquierda   --h = ancho de la numeración
+   ========================================================================= */
+.p {
+  margin: 0;
+  text-align: justify;
+  line-height: var(--lh-115);
+}
+.p-1 { line-height: var(--lh-1); }          /* interlineado sencillo */
+
+.n-item {
+  --l: 14.2pt;
+  --h: 14.2pt;
+  padding-left: var(--l);
+  text-indent: calc(-1 * var(--h));
+}
+.n-item > .n {
+  display: inline-block;
+  min-width: var(--h);
+  text-indent: 0;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+/* Título de sección: negrita + subrayado */
+.sec { font-weight: 700; --l: 14.2pt; --h: 14.2pt; }
+.sec .u, .u { text-decoration: underline; }
+
+/* Texto debajo de un título de sección (sangría 284 tw) */
+.cuerpo     { padding-left: 14.2pt; }
+.cuerpo-b6  { padding-left: 14.2pt; margin-top: 6pt; }
+
+/* Sub-numeración */
+.it-2   { --l: 36.05pt; --h: 21.85pt; margin-top: 6pt; }   /* 2.x  3.x  (721/437 tw) */
+.it-4-1 { --l: 35.45pt; --h: 21.25pt; }                    /* 4.1       (709/425 tw) */
+.it-4-2 { --l: 42.55pt; --h: 28.35pt; }                    /* 4.2       (851/567 tw) */
+.it-4-3 { --l: 28.35pt; --h: 14.8pt;  }                    /* 4.3       (567/296 tw) */
+.it-4-3 > .n { min-width: 21.85pt; }                        /* el texto salta al tabulador a 35.4 pt */
+.it-4-3-1 { --l: 49.6pt; --h: 28.35pt; margin-top: 6pt; }  /* 4.3.x     (992/567 tw) */
+.it-6   { --l: 49.65pt; --h: 36pt; margin-top: 6pt; font-weight: 700; line-height: var(--lh-1); }  /* 6.1 (interlineado sencillo) */
+.it-7   { --l: 49.65pt; --h: 36pt; margin-top: 6pt; font-size: 9pt; }    /* 7.x */
+.it-7 > .n { font-size: 9.5pt; }
+
+.texto-4-2 { padding-left: 42.55pt; }
+
+/* Rótulo de imagen / tabla (centrado) */
+.rotulo {
+  text-align: center;
+  font-weight: 700;
+  break-after: avoid;
+}
+.rotulo-img   { margin-left: 36pt; line-height: var(--lh-1); }
+.rotulo-tabla { margin-left: 49.65pt; line-height: var(--lh-115); text-decoration: underline; }
+
+/* "Fuente:" bajo la tabla */
+.fuente { margin-left: 35.45pt; }   /* en Word sobresale 21.3 pt al margen derecho; en impresión web se recorta */
+
+/* =========================================================================
+   TABLA DE IMAGEN (IMAGEN N° 01)  ·  borde doble · 425.8 pt de ancho
+   ========================================================================= */
+.tabla-imagen {
+  width: 425.8pt;
+  margin-left: 41.8pt;
+  border-collapse: collapse;
+  table-layout: fixed;
+  break-inside: avoid;
+}
+.tabla-imagen td {
+  padding: 0 5.4pt;
+  border: 2.25pt double var(--negro);
+  vertical-align: middle;
+}
+.tabla-imagen img { display: block; width: 417.6pt; max-width: 100%; height: auto; margin: 0 auto; }
+.tabla-imagen .img-celda { padding-bottom: 2pt; }
+.tabla-imagen .leyenda { font-size: 8pt; text-align: justify; line-height: var(--lh-1); }
+
+/* =========================================================================
+   TABLA N° 01  ·  Hechos constatados
+   403.6 pt de ancho · sangría 49.4 pt · márgenes de celda 2.85 pt
+   ========================================================================= */
+.tabla-hechos {
+  width: 403.6pt;
+  margin-left: 49.4pt;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+.tabla-hechos col.c1 { width: 16.42%; }
+.tabla-hechos col.c2 { width: 42.4%;  }
+.tabla-hechos col.c3 { width: 27.14%; }
+.tabla-hechos col.c4 { width: 14.04%; }
+
+.tabla-hechos th,
+.tabla-hechos td {
+  padding: 0 2.85pt;
+  border: 0.5pt solid var(--negro);
+  vertical-align: middle;
+  overflow-wrap: break-word;
+}
+.tabla-hechos th {
+  background: var(--azul-tabla);
+  color: #fff;
+  font-size: 7.5pt;
+  font-weight: 700;
+  text-align: center;
+  line-height: var(--lh-1);
+}
+.tabla-hechos td { font-size: 7.5pt; line-height: var(--lh-1); text-align: left; }
+.tabla-hechos .c-centro  { text-align: center; }
+.tabla-hechos .c-norma   { font-size: 8pt; text-align: justify; }
+.tabla-hechos .c-norma p { min-height: 12pt; }              /* párrafo vacío = 1 línea */
+.tabla-hechos .c-desc    { color: var(--rojo-tabla); text-align: justify; }
+.tabla-hechos .c-medio   { color: var(--negro); }
+.tabla-hechos .bl        { font-weight: 700; font-style: italic; }
+
+/* =========================================================================
+   ANEXOS (lista en números romanos)  ·  texto 9 pt · numeración 10 pt
+   ========================================================================= */
+.anexo {
+  padding-left: 50.2pt;                  /* 1004 tw */
+  text-indent: -18pt;                    /* 360 tw  */
+  font-size: 9pt;
+  line-height: 15pt;
+  text-align: justify;
+  margin-left: 0;
+}
+.anexo > .n {
+  display: inline-block;
+  min-width: 18pt;
+  text-indent: 0;
+  font-size: 10pt;
+}
+/* La numeración arranca a 644 tw (32.2 pt) del margen */
+.anexo { margin-left: 0; padding-left: 50.2pt; }
+
+/* =========================================================================
+   FIRMAS
+   ========================================================================= */
+.atentamente { margin-left: 14.2pt; text-align: justify; line-height: var(--lh-1); }
+
+.tabla-firmas {
+  margin: 0 auto;
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 432.4pt;
+}
+.tabla-firmas tr { break-inside: avoid; }
+.tabla-firmas td { width: 216.2pt; padding: 0 5.4pt; vertical-align: middle; }
+.firma-celda {
+  position: relative;
+  height: 62pt;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.firma-1 { width: 82.5pt; height: 61.5pt; display: block; }
+.firma-2 {
+  position: absolute;
+  left: 72.65pt;
+  top: 25.25pt;
+  width: 81.5pt;
+  height: 38.9pt;
+}
+.firma-datos p {
+  font-size: 9pt;
+  line-height: 13.5pt;
+  text-align: center;
+}
+
+/* =========================================================================
+   NOTA AL PIE  ·  Poppins 7 pt · justificada · filete de 144 pt
+   ========================================================================= */
+.fnref { font-size: 9pt; vertical-align: super; line-height: 0; }
+
+.notas-pie { break-inside: avoid; margin-top: 18pt; }
+.notas-pie::before {
+  content: "";
+  display: block;
+  width: 144pt;
+  border-top: 0.5pt solid var(--negro);
+  margin-bottom: 2pt;
+}
+.notas-pie p {
+  font-size: 7pt;
+  line-height: 10.5pt;
+  text-align: justify;
+}
+.notas-pie .fn-n { font-weight: 700; vertical-align: super; font-size: 7pt; line-height: 0; }
+
+/* =========================================================================
+   Impresión
+   ========================================================================= */
+@media print {
+  .tabla-hechos tr { break-inside: auto; }
+  .n-item, .anexo { orphans: 2; widows: 2; }
+}
+
+/* =========================================================================
+   JUSTIFICADO COMPATIBLE CON WORD
+   Word (y LibreOffice) comprimen el espacio entre palabras al justificar,
+   algo que CSS no hace. Un word-spacing negativo en los párrafos justificados
+   reproduce exactamente los mismos saltos de línea y de página del Word.
+   Si cambias de fuente o de motor, pon --compresion: 0pt para desactivarlo.
+   ========================================================================= */
+:root { --compresion: -0.6pt; }
+.p, .kv, .anexo, .atentamente, .fuente,
+.tabla-hechos .c-norma, .tabla-hechos .c-desc,
+.tabla-imagen .leyenda, .notas-pie p {
+  word-spacing: var(--compresion);
+}
+/* Los títulos y rótulos no se comprimen (una sola línea) */
+.p.sec, .rotulo, .tabla-hechos .c-norma b, .kv:not(.kv-hang) { word-spacing: normal; }

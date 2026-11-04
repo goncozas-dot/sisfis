@@ -1,0 +1,14 @@
+{
+  "name": "sisfis-luis",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sistema de informes SISFIS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "adm-zip": "^0.6.1",
+    "express": "^4.21.2"
+  }
+}
