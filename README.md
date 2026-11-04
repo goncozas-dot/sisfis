@@ -23,11 +23,13 @@ npm start
 
 ## Uso de la aplicación
 
-1. Ve a **Nuevo informe** y completa el número de expediente y el nombre de la empresa; son obligatorios.
-2. Completa los demás campos según corresponda. Si el agente presentó descargos, activa la casilla para ingresar su análisis.
+1. Ve a **Nuevo informe** y presiona **Generar caso ficticio aleatorio**. El sistema completa los campos con una empresa, un expediente, una unidad y un escenario académico inventados; no consulta una API externa.
+2. Revisa o modifica los datos generados. Puedes generar otro caso antes de guardar. La opción de descargos también se elige aleatoriamente.
 3. Presiona **Guardar informe**. El registro aparecerá en **Informes registrados** y podrás seleccionarlo para ver su vista previa.
 4. En la lista puedes **Editar**, **Eliminar** o **Generar Word** para cada informe.
-5. El documento se descarga como `Informe_<expediente>.docx`. Se basa en la plantilla del proyecto y conserva su diseño; la consulta visual usa los datos ingresados en el formulario.
+5. El documento se descarga como `Informe_<expediente>.docx`. Se basa en la plantilla del proyecto y conserva su diseño; la consulta visual usa los datos del formulario.
+
+Todos los casos generados son datos sintéticos para demostración: no describen empresas ni fiscalizaciones reales y no deben utilizarse para trámites oficiales.
 
 ## Datos y archivos importantes
 
