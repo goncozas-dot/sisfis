@@ -23,13 +23,13 @@ npm start
 
 ## Uso de la aplicación
 
-1. Ve a **Nuevo informe** y presiona **Generar caso ficticio aleatorio**. El sistema completa los campos con una empresa, un expediente, una unidad y un escenario académico inventados; no consulta una API externa.
-2. Revisa o modifica los datos generados. Puedes generar otro caso antes de guardar. La opción de descargos también se elige aleatoriamente.
-3. Presiona **Guardar informe**. El registro aparecerá en **Informes registrados** y podrás seleccionarlo para ver su vista previa.
+1. Ve a **Nuevo informe** e ingresa el expediente y la empresa en **Datos generales**. La placa y el supervisor son opcionales.
+2. Al salir del campo, las demás secciones se completan automáticamente con textos de demostración vinculados a los datos generales; no se consulta una API externa.
+3. Revisa y edita el contenido autocompletado antes de presionar **Guardar informe**. El registro aparecerá en **Informes registrados** y podrás seleccionarlo para ver su vista previa.
 4. En la lista puedes **Editar**, **Eliminar** o **Generar Word** para cada informe.
 5. El documento se descarga como `Informe_<expediente>.docx`. Se basa en la plantilla del proyecto y conserva su diseño; la consulta visual usa los datos del formulario.
 
-Todos los casos generados son datos sintéticos para demostración: no describen empresas ni fiscalizaciones reales y no deben utilizarse para trámites oficiales.
+El contenido autocompletado es de demostración, puede incluir observaciones aleatorias y no representa una fiscalización real. Revísalo antes de guardar y no lo utilices para trámites oficiales.
 
 ## Datos y archivos importantes
 

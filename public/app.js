@@ -35,28 +35,10 @@ const form = $('form');
 const tieneDescargo = $('tieneDescargo');
 
 const zonaDescargo = $('zonaDescargo');
-
-const empresasDemo = [
- 'CORDILLERA',
- 'RUTA ANDINA',
- 'CAMINOS DEL SOL',
- 'VALLE SEGURO',
- 'HORIZONTE',
- 'SIERRA AZUL',
- 'NUEVO CAMINO',
- 'RUTA DEL VALLE',
- 'COSTA DEL SUR',
- 'ANDES LOGÍSTICA'
-];
-
-const nombresSupervisores = [
- 'María Fernanda Rojas',
- 'Luis Alberto Salazar',
- 'Rosa Elena Paredes',
- 'Carlos Andrés Medina',
- 'Daniela Milagros Torres',
- 'Jorge Eduardo Castillo'
-];
+let contenidoAutogenerado = null;
+let descargosAutogenerados = null;
+let descargosEditados = false;
+let ultimaClaveGeneral = '';
 
 const observacionesDemo = [
  'la señalización de seguridad del vehículo requería actualización',
@@ -74,10 +56,12 @@ const ubicacionesDemo = [
  'la carretera Panamericana Sur'
 ];
 
-let ultimaEmpresaDemo = '';
-
 function elegirAleatorio(opciones) {
  return opciones[Math.floor(Math.random() * opciones.length)];
+}
+
+function conPuntoFinal(texto) {
+ return /[.!?]$/.test(texto) ? texto : `${texto}.`;
 }
 
 function generarFechaDemo() {
@@ -91,72 +75,100 @@ function generarFechaDemo() {
  }).format(fecha);
 }
 
-function generarPlacaDemo() {
- const letras = 'ABCDEFGHJKLMNPRSTUVWXYZ';
- const letrasPlaca = Array.from(
-  { length: 3 },
-  () => letras[Math.floor(Math.random() * letras.length)]
- ).join('');
- const numeros = String(Math.floor(Math.random() * 1000)).padStart(3, '0');
- return `${letrasPlaca}-${numeros}`;
+function autocompletarInforme() {
+if (editId) {
+ return;
 }
 
-function generarCasoFicticio() {
- const opcionesEmpresa = empresasDemo.filter(nombre => nombre !== ultimaEmpresaDemo);
- const empresa = `TRANSPORTES ${elegirAleatorio(opcionesEmpresa)} DEMO S.A.C.`;
- ultimaEmpresaDemo = empresa.replace(/^TRANSPORTES | DEMO S\.A\.C\.$/g, '');
+const expediente = $('expediente').value.trim();
+const empresa = $('empresa').value.trim();
+if (!expediente || !empresa) {
+ return;
+}
 
- const expediente = `${new Date().getFullYear()}${String(
-  Math.floor(Math.random() * 100000000)
- ).padStart(8, '0')}`;
- const placa = generarPlacaDemo();
- const supervisor = `Ing. ${elegirAleatorio(nombresSupervisores)}`;
- const fecha = generarFechaDemo();
- const ubicacion = elegirAleatorio(ubicacionesDemo);
- const observacion = elegirAleatorio(observacionesDemo);
- const tieneDescargoGenerado = Math.random() < 0.5;
+const placa = $('placa').value.trim();
+const supervisor = $('supervisor').value.trim();
+const claveGeneral = JSON.stringify([expediente, empresa, placa, supervisor]);
+if (claveGeneral === ultimaClaveGeneral) {
+ return;
+}
 
- const caso = {
-  expediente,
-  empresa,
-  placa,
-  supervisor,
-  antecedentes:
-   `2.1 Con fecha ${fecha}, se programó una visita de fiscalización ficticia a la unidad de placa ${placa}, operada por ${empresa}, en ${ubicacion}.\n` +
-   `2.2 El caso académico fue identificado con el expediente N.° ${expediente}; los datos de esta demostración son inventados.`,
-  analisis:
-   `3.1 Durante la visita simulada se registró como observación que ${observacion}.\n` +
-   `3.2 La revisión académica tomó en cuenta la información ficticia de la unidad de placa ${placa} y el expediente ${expediente}.\n` +
-   '3.3 La observación y sus circunstancias son referenciales y se generaron únicamente para demostrar el sistema.',
-  descargos: tieneDescargoGenerado
-   ? `La empresa ${empresa} presentó un descargo ficticio relacionado con la observación registrada. Para este ejemplo académico, se recomienda verificar la documentación presentada antes de determinar si corresponde tenerlo por subsanado.`
-   : '',
-  conclusiones:
-   `4.1 En el escenario ficticio del expediente ${expediente}, se registró una observación referencial para la unidad ${placa} de la empresa ${empresa}\n` +
-   `4.2 La información no representa una fiscalización real ni determina el cumplimiento de una empresa existente.`,
-  recomendaciones:
-   `5.1 Para este caso académico, se recomienda revisar la observación referencial y conservar la documentación ficticia asociada al expediente ${expediente}.\n` +
-   '5.2 No utilizar estos datos para trámites, comunicaciones oficiales ni decisiones reales.'
- };
+const fecha = generarFechaDemo();
+const ubicacion = elegirAleatorio(ubicacionesDemo);
+const observacion = elegirAleatorio(observacionesDemo);
+const unidad = placa ? `unidad de placa ${placa}` : 'unidad vehicular indicada en el formulario';
+const responsable = supervisor || 'un supervisor por consignar';
+const tieneDescargoGenerado = descargosEditados
+ ? tieneDescargo.checked
+ : Math.random() < 0.5;
+const secciones = {
+ antecedentes:
+  `2.1 Con fecha ${fecha}, se programó una visita de demostración a la ${unidad}, operada por ${empresa}, en ${ubicacion}.\n` +
+  `2.2 La visita corresponde al expediente N.° ${expediente} y queda a cargo de ${responsable}.`,
+ analisis:
+  `3.1 Para esta demostración, se registró como observación referencial que ${observacion}.\n` +
+  `3.2 El análisis se relaciona con la ${unidad} de ${empresa} y el expediente ${expediente}.\n` +
+  '3.3 La observación es un dato de ejemplo generado automáticamente y no representa una verificación real.',
+ descargos: tieneDescargoGenerado
+  ? `Para esta demostración, ${empresa} presentó un descargo de ejemplo relacionado con la observación registrada en el expediente ${expediente}. La evaluación debe revisarse y ajustarse antes de guardar el informe.`
+  : '',
+ conclusiones:
+   `4.1 En el informe de demostración del expediente ${expediente}, se registró una observación referencial para la ${unidad}, operada por ${conPuntoFinal(empresa)}\n` +
+  '4.2 La información se generó automáticamente con fines académicos y no determina el cumplimiento real de la empresa.',
+ recomendaciones:
+  `5.1 Se recomienda revisar y, de ser necesario, corregir la información de la ${unidad}, operada por ${empresa}, antes de guardar el expediente ${expediente}.\n` +
+  '5.2 Verifica los datos y reemplaza el contenido de ejemplo antes de utilizar el informe.'
+};
 
- ids.forEach(id => {
-  $(id).value = caso[id] || '';
- });
+Object.entries(secciones).forEach(([id, contenido]) => {
+ const campo = $(id);
+ const anterior = contenidoAutogenerado && contenidoAutogenerado[id];
+ if (!campo.value.trim() || campo.value === anterior) {
+  campo.value = contenido;
+  secciones[id] = contenido;
+ } else {
+  delete secciones[id];
+ }
+});
+
+if (descargosAutogenerados === null || !descargosEditados) {
  tieneDescargo.checked = tieneDescargoGenerado;
- zonaDescargo.hidden = !tieneDescargoGenerado;
- editId = null;
- vista(caso);
- $('estadoGeneracion').textContent =
-  'Caso ficticio generado. Puedes revisar o editar los datos antes de guardarlo.';
+ descargosAutogenerados = tieneDescargoGenerado;
+}
+zonaDescargo.hidden = !tieneDescargo.checked;
+contenidoAutogenerado = {
+ ...(contenidoAutogenerado || {}),
+ ...secciones
+};
+ultimaClaveGeneral = claveGeneral;
+vista(datos());
+$('estadoAutocompletado').textContent =
+ 'Las secciones del informe se completaron automáticamente con los datos generales. Revisa y edita el contenido antes de guardar.';
 }
 
 tieneDescargo.addEventListener('change', () => {
 
  zonaDescargo.hidden = !tieneDescargo.checked;
+ descargosEditados = true;
 
 });
 
-$('generarCaso').addEventListener('click', generarCasoFicticio);
+['expediente', 'empresa', 'placa', 'supervisor'].forEach(id => {
+ $(id).addEventListener('change', autocompletarInforme);
+});
+
+form.addEventListener('reset', () => {
+ editId = null;
+ contenidoAutogenerado = null;
+ descargosAutogenerados = null;
+ descargosEditados = false;
+ ultimaClaveGeneral = '';
+ window.setTimeout(() => {
+  zonaDescargo.hidden = !tieneDescargo.checked;
+  $('estadoAutocompletado').textContent =
+   'Ingresa el expediente y la empresa para completar automáticamente las demás secciones.';
+ }, 0);
+});
 
 
 
@@ -205,6 +217,11 @@ function datos() {
 // Cargar informe para editar
 
 function cargar(x) {
+
+ contenidoAutogenerado = null;
+ descargosAutogenerados = null;
+ descargosEditados = false;
+ ultimaClaveGeneral = '';
 
  ids.forEach(id => {
 
